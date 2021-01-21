@@ -67,7 +67,7 @@ router.get('/:id', function (req, res) {
  })
 
  router.post('/', jsonParser, function (req, res) {
-    var query = connection.query('INSERT INTO `covid19db`.`booking` (`name`, `date`, `category`, `location`) VALUES (?,?,?,?);', [req.body.name,req.body.date,req.body.category,req.body.location], function (error, results, fields) {
+    var query = connection.query('INSERT INTO `covid19db`.`booking` (`name`, `nric`, `date`, `category`, `location`) VALUES (?,?,?,?,?);', [req.body.name,req.body.nric,req.body.date,req.body.category,req.body.location], function (error, results, fields) {
         if (error) throw error;
   
         res.status(201);
