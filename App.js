@@ -1,32 +1,38 @@
-import './App.css';
+ import './App.css';
+//importing the various components to be used in the form
 import { Button, Tab, Tabs, Table, Form, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
-//import { Redirect } from 'react-router-dom';
 
+
+//useEffect accepts function 
 function App() {
   const [booking, setBooking] = useState([]);
     useEffect(() => {
-    // Update the document title using the browser API
+    // for sucessful request (get method to view booking)
     axios.get('http://localhost:5000/booking').then(res => {
       console.log(res.data);
       setBooking(res.data);
+      //for unsucessful request 
     }).catch(error => {
       console.log(error.response)
     });   
   }, []);
 
-
+//const function to declare variables. useState returns value of the function to update , 
+//using empty string for default value
+//when the input is changed , onChange handler will be called and updated
   const [name, setName] = useState('');
   const [nric, setNric] = useState('');
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
 
-
+//preventDefault is called on the event when submitting the form to prevent a browser refresh.
   const formSubmit = (event) => {
     event.preventDefault();
+    //console.log() method writes a message to the console,useful for testing purposes
     console.log(event);
     console.log("name", name);
     console.log("nric", nric);
@@ -34,13 +40,14 @@ function App() {
     console.log("location", location);
     console.log("date", date);
 
+// post request is made to perform task
     axios.post('http://localhost:5000/booking', {
       name: name,
       nric: nric,
       category: category,
       location: location,
       date: date
-
+//response from backend service
     }).then(res => {  
       console.log(res.data);
       alert(JSON.stringify(res.data));
@@ -49,7 +56,7 @@ function App() {
       console.log(error.response)
          });
   }
-
+//to delete the booked appointment
   const deleteBooking = (event) => {
     let element = event.currentTarget;
     console.log(element.id);
@@ -75,6 +82,7 @@ function App() {
           <Table striped bordered hover variant="=outlined-dark"> 
             <thead>
               <tr>
+                {/* table head titles */}
                 <th>ID</th>
                 <th>Name</th>
                 <th>NRIC</th>
@@ -84,6 +92,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
+              {/* connecting with booking table in database,to iterate values to update table in db  */}
               {booking.map(booking => {
                 return <tr key={booking.id} id={booking.id} onClick={(event) => deleteBooking(event)}>
                   <td>{booking.id}</td>
@@ -98,7 +107,8 @@ function App() {
           </Table>
         </Tab>
         <Tab eventKey="addbooking" title="Book Appointment">
-          <Card className="bg-light mx-auto" style={{ width: '40rem' }}>
+          {/* card colour is called warning and mx-auto aligns it in the centre */}
+          <Card className="bg-warning mb-3 mx-auto" style={{ width: '40rem' }}>
             <Card.Header>Add Booking</Card.Header>
             <Form onSubmit={(event) => formSubmit(event)}>
               <Form.Group controlId="name">
@@ -157,3 +167,4 @@ function App() {
   );
 }
 export default App;
+
