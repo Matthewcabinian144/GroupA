@@ -1,5 +1,7 @@
 const { json } = require('express');
 const mysql = require('mysql')
+//added cors line here 
+const cors = require('cors');
 var express = require('express')
 const path = require('path');
 const bodyParser = require('body-parser');
