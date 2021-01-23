@@ -1,22 +1,29 @@
 import './App.css';
 import { Button, Tab, Tabs, Table, Form, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useState } from 'react';
+import {useState,useEffect} from 'react';
 import axios from 'axios';
-//import DateTimePicker from 'react-datetime-picker';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-calendar/dist/Calendar.css';
+//import { Redirect } from 'react-router-dom';
 
 function App() {
   const [booking, setBooking] = useState([]);
-  const [value, onChange] = useState(new Date());
+    useEffect(() => {
+    // Update the document title using the browser API
+    axios.get('http://localhost:5000/booking').then(res => {
+      console.log(res.data);
+      setBooking(res.data);
+    }).catch(error => {
+      console.log(error.response)
+    });   
+  }, []);
+
 
   const [name, setName] = useState('');
   const [nric, setNric] = useState('');
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
+
 
   const formSubmit = (event) => {
     event.preventDefault();
@@ -32,7 +39,7 @@ function App() {
       nric: nric,
       category: category,
       location: location,
-      date: "2021-01-21 07:00:00",
+      date: date
 
     }).then(res => {  
       console.log(res.data);
@@ -128,9 +135,17 @@ function App() {
 
               <Form.Group controlId="date">
                 <Form.Label>Date</Form.Label>
-                <DatePicker style="width:200px" selected={value} value={value} onChange={onChange} 
-                showTimeSelect timeFormat="HH:mm" timeCaption="time" 
-                timeIntervals={60} dateFormat="MMMM d, yyyy h:mm aa"/>  
+                <Form.Control as="select" value={date} onChange={e => setDate(e.target.value)}>
+                  <option>Choose...</option>
+                  <option>25/01/2021</option>
+                  <option>26/01/2021</option>
+                  <option>27/01/2021</option>
+                  <option>28/01/2021</option>
+                  <option>29/01/2021</option>
+                  <option>30/01/2021</option>
+                  <option>31/01/2021</option>
+
+                </Form.Control>
                 </Form.Group>            
                                 
               <Button variant="primary" type="submit">Submit</Button>
