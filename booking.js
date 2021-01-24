@@ -9,6 +9,8 @@ var jsonParser = bodyParser.json()
 var router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+//Booking Appointment API by Matthew Cabinian
+
 //Connect to Local Database
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -18,7 +20,7 @@ const connection = mysql.createConnection({
  })
 
  connection.connect();
-//return booking from DB
+//Return booking from DB
 router.get('/', function (req, res) {
    connection.query("SELECT * FROM covid19db.booking;", function (err, rows, fields) {
        if (err) throw err
@@ -26,7 +28,7 @@ router.get('/', function (req, res) {
    })
 })
 
-//Find booking by ID
+//Find appointment booking by ID
 router.get('/:id', function (req, res) {
     connection.query("SELECT * FROM covid19db.booking where id  = ?",[req.params.id], function (err, rows, fields) {
         if (err) throw err
@@ -40,6 +42,8 @@ router.get('/:id', function (req, res) {
     });
  })
  
+//Delete function for any appointment listing
+//Delete by booking ID
  router.delete('/:id', function (req, res) {
     connection.query("DELETE FROM covid19db.booking WHERE id = ?", [req.params.id], function (err, rows, fields) {
         if (err) throw err
@@ -54,6 +58,7 @@ router.get('/:id', function (req, res) {
     });
  })
 
+//Udpate function for any changes to user's appointment
  router.put('/:id', jsonParser, function (req, res) {
     connection.query("UPDATE `covid19db`.`booking` SET `name` = ?, `date` = ?, `category` = ?, `location` = ?  WHERE `id` = ?;", [req.body.name,req.body.date,req.body.category,req.body.location,req.params.id], function (err, rows, fields) {
         if (err) throw err
@@ -68,6 +73,7 @@ router.get('/:id', function (req, res) {
     });
  })
 
+//Create new listing fucntion and send to MySQL database
  router.post('/', jsonParser, function (req, res) {
     var query = connection.query('INSERT INTO `covid19db`.`booking` (`name`, `nric`, `date`, `category`, `location`) VALUES (?,?,?,?,?);', [req.body.name,req.body.nric,req.body.date,req.body.category,req.body.location], function (error, results, fields) {
         if (error) throw error;
