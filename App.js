@@ -20,7 +20,7 @@ function App() {
     axios.get('http://localhost:5000/booking').then(res => {
       console.log(res.data);
       setBooking(res.data);
-      //for unsucessful request 
+      //for unsucessful request
     }).catch(error => {
       console.log(error.response)
     });   
@@ -57,12 +57,12 @@ function App() {
     }).then(res => {  
       console.log(res.data);
       alert(JSON.stringify(res.data));
-
+/**@exception for unsucessful request */
     }).catch(error => {
       console.log(error.response)
          });
   }
-//to delete the booked appointment
+//to delete the booked appointment by id
   const deleteBooking = (event) => {
     let element = event.currentTarget;
     console.log(element.id);
