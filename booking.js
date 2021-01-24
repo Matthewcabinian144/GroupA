@@ -9,7 +9,11 @@ var jsonParser = bodyParser.json()
 var router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-//Booking Appointment API by Matthew Cabinian
+/**
+* Sending or Receiving information to and from the MySQL Database
+*@author Matthew Cabinian
+*
+*/
 
 //Connect to Local Database
 const connection = mysql.createConnection({
