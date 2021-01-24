@@ -48,6 +48,10 @@
   flex-direction: row;
 }
 
+.header {
+  display: flex;
+  justify-content: center;
+}
 
 @keyframes App-logo-spin {
   from {

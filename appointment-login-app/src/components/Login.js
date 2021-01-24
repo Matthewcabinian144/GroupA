@@ -8,26 +8,22 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import Home from './Home';
-import { Redirect, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
 
     const [nric, setNRIC] = useState('');
     const [password, setPassword] = useState('');
-    const [submitted, setSubmitted] = useState('false');
+    const history = useHistory();
 
     const formSubmit = (event) => {
         event.preventDefault();
-        console.log(event);
-        console.log("NRIC: ", nric);
-        console.log("Password: ", password);
-        axios.post('http://localhost:5000/login', {
+        // axios.post('http://localhost:5000/login', {
+        axios.post('/login', {
             nric: nric,
             password: password
         }).then(res => {
-            console.log("Login successful!");
-            setSubmitted(true);
+            history.push('/home', { nric: nric })
         }).catch(error => {
             console.log(error.response);
             if (error.response.status === 404)
@@ -35,14 +31,6 @@ function Login() {
             if (error.response.status === 401)
                 alert("Incorrect Password!");
         });
-    }
-
-    if (submitted === true) {
-        console.log(nric);
-        return <Redirect to={{
-            pathname: "/home",
-            state: { nric: nric }
-        }}></Redirect>
     }
 
     return (
@@ -64,4 +52,4 @@ function Login() {
     )
 }
 
-export default withRouter(Login);
+export default Login;
