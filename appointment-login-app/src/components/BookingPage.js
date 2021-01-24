@@ -1,3 +1,10 @@
+/**
+ * This page allows users to book appointment. An alert will pop upon successful booking (it comes from the api-backend)
+ * Users would be able to see their booking in the view booking page as well 
+ * 
+ * @author Surya Lekha
+ */
+
 //importing the various components to be used in the form
 import { Button, Tab, Tabs, Table, Form, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';

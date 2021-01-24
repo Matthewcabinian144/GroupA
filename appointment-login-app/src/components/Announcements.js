@@ -1,3 +1,9 @@
+/**
+ * This program sets up the announcements panel which the user sees on the login page
+ * 
+ * @author Ian Tjahjono
+ */
+
 import { Card, Tab, Tabs } from "react-bootstrap";
 
 function Announcements() {

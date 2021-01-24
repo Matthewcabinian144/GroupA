@@ -1,3 +1,8 @@
+/**
+ * Backend written in NodeJS to connect our frontend react application to our MySQL Database
+ * 
+ * @author Ian Tjahjono
+ */
 const express = require('express')
 const router = express.Router()
 const mysql = require('mysql');
@@ -17,7 +22,16 @@ connection.connect();
 ********************************* LOGIN API *********************************************************
 */
 
-//Check if user details are present and correct in user database
+/**
+ * This method checks whether the details entered by the user are correct. 
+ * If the details are correct, the method makes a call to the SingPass API and retrieves the name of the user.
+ * If the details are incorrect, the method first checks whether the NRIC entered is present in the database. If present,
+ * the password entered is wrong. If not present, the user does not exist in the database at all.
+ * 
+ * @param nric User's NRIC. Should start with S/T followed by 7 numbers and ends with a letter. 
+ * @param password User defined password. Not case sensitive
+ * @param name Name of the user retrieved from SingPass API and stored into the database.
+ */
 router.post('/', bodyParser, (req, res) => {
     let name;
 
@@ -51,7 +65,12 @@ router.post('/', bodyParser, (req, res) => {
     });
 });
 
-//Get name of person who logged in
+/**
+ * This method gets the entry of the user through searching by NRIC
+ * 
+ * @param nric User NRIC. Captured from when user first logs in to the system
+ * @returns Entry of the user as stored in the database
+ */
 router.post('/user', bodyParser, function (req, res) {
     connection.query("SELECT * FROM covid19db.users where nric  = ?;", req.body.nric, function (err, rows, fields) {
         if (err) throw err
@@ -62,6 +81,11 @@ router.post('/user', bodyParser, function (req, res) {
 /*
 **************************** BOOKING API *********************************************************
 */
+/**
+*Sending or Receiving information to and from the MySQL Database
+*@author Matthew Cabinian
+*
+*/
 
 router.post('/home', bodyParser, function (req, res) {
     connection.query("SELECT * FROM covid19db.booking where nric = ?;", req.body.nric, function (err, rows, fields) {
@@ -70,6 +94,8 @@ router.post('/home', bodyParser, function (req, res) {
     })
 })
 
+//Delete function for any appointment listing
+//Delete by booking ID  
 router.delete('/home/:id', function (req, res) {
     connection.query("DELETE FROM covid19db.booking WHERE id = ?", [req.params.id], function (err, rows, fields) {
         if (err) throw err
@@ -85,6 +111,7 @@ router.delete('/home/:id', function (req, res) {
     });
 })
 
+//Udpate function for any changes to user's appointment
 router.put('/:id', bodyParser, function (req, res) {
     connection.query("UPDATE `covid19db`.`booking` SET `name` = ?, `date` = ?, `category` = ?, `location` = ?  WHERE `id` = ?;", [req.body.name, req.body.date, req.body.category, req.body.location, req.params.id], function (err, rows, fields) {
         if (err) throw err
@@ -99,6 +126,16 @@ router.put('/:id', bodyParser, function (req, res) {
     });
 })
 
+//Create new listing fucntion and send to MySQL database
+/**
+*User input of the following parameters is stored into the database
+*@param name User's name
+*@param nric User's Singapore Identiy Card Number
+*@param date Date and time selected for appointment
+*@param category 3 options (Mask, Tokens, Vaccinations) chosen for the appointment
+*@param location The various locations for user to collect the options in the Category parameter
+*@result Message Confirmation Message that the booking parameters have been filled and has been stored and listed
+*/
 router.post('/home/booking', bodyParser, function (req, res) {
     connection.query('INSERT INTO `covid19db`.`booking` (`name`, `nric`, `category`, `location`, `date`, `time`) VALUES (?,?,?,?,?,?);', [req.body.name, req.body.nric, req.body.category, req.body.location, req.body.date, req.body.time], function (error, results, fields) {
         if (error) throw error;
