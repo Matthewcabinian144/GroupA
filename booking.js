@@ -10,7 +10,7 @@ var router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 /**
-* Sending or Receiving information to and from the MySQL Database
+*Sending or Receiving information to and from the MySQL Database
 *@author Matthew Cabinian
 *
 */
@@ -78,6 +78,15 @@ router.get('/:id', function (req, res) {
  })
 
 //Create new listing fucntion and send to MySQL database
+/**
+*User input of the following parameters is stored into the database
+*@param name User's name
+*@param nric User's Singapore Identiy Card Number
+*@param date Date and time selected for appointment
+*@param category 3 options (Mask, Tokens, Vaccinations) chosen for the appointment
+*@param location The various locations for user to collect the options in the Category parameter
+*@result Message Confirmation Message that the booking parameters have been filled and has been stored and listed
+*/
  router.post('/', jsonParser, function (req, res) {
     var query = connection.query('INSERT INTO `covid19db`.`booking` (`name`, `nric`, `date`, `category`, `location`) VALUES (?,?,?,?,?);', [req.body.name,req.body.nric,req.body.date,req.body.category,req.body.location], function (error, results, fields) {
         if (error) throw error;
