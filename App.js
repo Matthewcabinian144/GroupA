@@ -1,4 +1,10 @@
- import './App.css';
+/**
+ * This page allows users to book appointment. An alert will pop upon successful booking (it comes from the api-backend)
+ * Users would be able to see their booking in the view booking page as well 
+ * 
+ * @author Surya Lekha
+ */ 
+import './App.css';
 //importing the various components to be used in the form
 import { Button, Tab, Tabs, Table, Form, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -77,6 +83,7 @@ function App() {
     <div className="App">
       <h1> Covid19 Appointment Management System</h1>
       <Tabs defaultActiveKey="booking">
+    {/* booked appointments will be seen here */}
         <Tab eventKey="booking" title="View Bookings">
           <h1>List of Booking</h1>
           <Table striped bordered hover variant="=outlined-dark"> 
